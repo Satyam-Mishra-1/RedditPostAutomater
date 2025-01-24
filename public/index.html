@@ -1,0 +1,244 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit API Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        button {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reddit API Interface</h1>
+
+        <button id="login">Login with Reddit</button>
+        <button id="getList">Get Hot Posts</button>
+        <button id="createPost">Create a Post</button>
+
+        <div class="output" id="output"></div>
+    </div>
+
+    <script>
+        document.getElementById('login').addEventListener('click', () => {
+            window.location.href = '/auth/reddit';
+        });
+
+        document.getElementById('getList').addEventListener('click', async () => {
+            const output = document.getElementById('output');
+            output.innerHTML = 'Loading hot posts...';
+            try {
+                const response = await fetch('/list');
+                if (!response.ok) throw new Error('Failed to fetch hot posts');
+                const data = await response.json();
+
+                if (data && data.data && data.data.children) {
+                    const posts = data.data.children.map(post => post.data.title).join('<br>');
+                    output.innerHTML = `<h3>Hot Posts:</h3><p>${posts}</p>`;
+                } else {
+                    output.innerHTML = 'No posts found.';
+                }
+            } catch (error) {
+                output.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        });
+
+        document.getElementById('createPost').addEventListener('click', async () => {
+            const output = document.getElementById('output');
+            output.innerHTML = 'Creating post...';
+            try {
+                const response = await fetch('/create-post');
+                if (!response.ok) throw new Error('Failed to create post');
+                const data = await response.json();
+                output.innerHTML = `<h3>Post Created:</h3><p>${JSON.stringify(data, null, 2)}</p>`;
+            } catch (error) {
+                output.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+<!--  Adding Certain New Functionality in the Code In the Below Code it is Nearly similar to the Above code but with certain new functionality   -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit API Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        button, input, textarea {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        textarea {
+            width: 100%;
+            height: 80px;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reddit API Interface</h1>
+
+        <button id="login">Login with Reddit</button>
+        <button id="getList">Get Hot Posts</button>
+        <button id="showCreateForm">Create a Post</button>
+
+        <div id="createForm" style="display: none;">
+            <h3>Enter Post Details</h3>
+            <input type="text" id="subreddit" placeholder="Subreddit (e.g., developer)" required><br>
+            <input type="text" id="title" placeholder="Title" required><br>
+            <textarea id="text" placeholder="Text" required></textarea><br>
+            <button id="submitPost">Submit Post</button>
+        </div>
+
+        <div class="output" id="output"></div>
+    </div>
+
+    <script>
+        // Event: Login with Reddit
+        document.getElementById('login').addEventListener('click', () => {
+            window.location.href = '/auth/reddit';
+        });
+
+        // Event: Get Hot Posts
+        document.getElementById('getList').addEventListener('click', async () => {
+            const output = document.getElementById('output');
+            output.innerHTML = 'Loading hot posts...';
+            try {
+                const response = await fetch('/list');
+                if (!response.ok) throw new Error('Failed to fetch hot posts');
+                const data = await response.json();
+
+                if (data && data.data && data.data.children) {
+                    const posts = data.data.children.map(post => post.data.title).join('<br>');
+                    output.innerHTML = `<h3>Hot Posts:</h3><p>${posts}</p>`;
+                } else {
+                    output.innerHTML = 'No posts found.';
+                }
+            } catch (error) {
+                output.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        });
+
+        // Event: Show Create Post Form
+        document.getElementById('showCreateForm').addEventListener('click', () => {
+            document.getElementById('createForm').style.display = 'block';
+            document.getElementById('output').innerHTML = '';
+        });
+
+        // Event: Submit Post
+        document.getElementById('submitPost').addEventListener('click', async () => {
+            const subreddit = document.getElementById('subreddit').value;
+            const title = document.getElementById('title').value;
+            const text = document.getElementById('text').value;
+            const output = document.getElementById('output');
+
+            if (!subreddit || !title || !text) {
+                output.innerHTML = '<p class="error">All fields are required.</p>';
+                return;
+            }
+
+            output.innerHTML = 'Submitting post...';
+            try {
+                const response = await fetch('/create-post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ subreddit, title, text }),
+                });
+                if (!response.ok) throw new Error('Failed to create post');
+                const data = await response.json();
+                output.innerHTML = `<h3>Post Created YOu Can Check It On Below Given URL:</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                output.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
