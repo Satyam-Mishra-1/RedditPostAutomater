@@ -18,3 +18,6 @@ out/
 
 # Package-lock files (if using npm or yarn)
 package-lock.json
+
+# Sensitive files
+reddit_token.txt
